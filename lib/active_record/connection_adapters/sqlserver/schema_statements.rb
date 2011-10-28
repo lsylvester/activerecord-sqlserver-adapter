@@ -193,7 +193,6 @@ module ActiveRecord
               ELSE NULL
             END AS [is_nullable],
             CASE 
-              WHEN CCU.COLUMN_NAME IS NOT NULL AND TC.CONSTRAINT_TYPE = N'PRIMARY KEY' THEN 1
               WHEN COLUMNPROPERTY(OBJECT_ID(columns.TABLE_SCHEMA+'.'+columns.TABLE_NAME), columns.COLUMN_NAME, 'IsIdentity') = 1 THEN 1
               ELSE NULL
             END AS [is_identity]
@@ -389,7 +388,7 @@ module ActiveRecord
         end
 
         def identity_column(table_name)
-          columns(table_name).detect(&:primary) || columns(table_name).detect(&:is_identity?)
+          columns(table_name).detect(&:is_identity?)
         end
 
       end
